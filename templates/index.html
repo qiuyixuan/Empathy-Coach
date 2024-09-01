@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation Coach</title>
+
+    <style>
+        .conversation-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .dialogue, .feedback {
+            margin-bottom: 15px;
+        }
+        .dialogue {
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #f7f7f7;
+        }
+        .feedback {
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #e6f7ff;
+        }
+    </style>
+
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            navigator.sendBeacon('/clear_session');
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="conversation-container">
+        <h1>Conversation Coach Chatbot</h1>
+        
+        <form method="POST">
+            <label for="person_a_input">Your (Person A's) Input:</label><br><br>
+            <textarea id="person_a_input" name="person_a_input" rows="4" cols="50" required></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        
+        <h2>Conversation History:</h2>
+        {% if conversation %}
+            {% for entry in conversation %}
+                <div class="dialogue">
+                    <strong>Person A:</strong> {{ entry.person_a_input }}<br>
+                    <strong>Person B:</strong> {{ entry.person_b_input }}
+                </div>
+                <div class="feedback">
+                    <strong>Coach:</strong> {{ entry.coach_feedback }}<br>
+                    <strong>Empathy Score:</strong> {{ entry.empathy_score }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No conversation history yet. Please enter input for Person A.</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
