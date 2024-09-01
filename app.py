@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 
+# secret_key removed when uploading
 
 openai.api_key = "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"
 
