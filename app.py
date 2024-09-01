@@ -6,8 +6,6 @@ app = Flask(__name__)
 
 # secret_key removed when uploading
 
-openai.api_key = "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"
-
 def generate_person_b_response(person_a_input):
     response = openai.ChatCompletion.create(
         model="gpt-4",
