@@ -1,14 +1,18 @@
 from flask import Flask, request, render_template, session
 import openai
+from dotenv import load_dotenv
 import os
 
-app = Flask(__name__)
+load_dotenv()
 
-# secret_key removed when uploading
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
+
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def generate_person_b_response(person_a_input):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are Person B in a conversation with Person A. Respond to Person A's input in a relevant and conversational manner."},
             {"role": "user", "content": f"Person A: {person_a_input}"},
@@ -22,7 +26,7 @@ def generate_person_b_response(person_a_input):
 
 def evaluate_conversation(person_a_input, person_b_input):
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a conversation coach. Evaluate Person A's response and provide feedback on how they can improve their empathy towards Person B. Provide the empathy score at the end of the feedback in the format: 'Empathy Score: X/10', where X is the numerical score out of 10."},
             {"role": "user", "content": f"Person A: {person_a_input}\nPerson B: {person_b_input}"},
